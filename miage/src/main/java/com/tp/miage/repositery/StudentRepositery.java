@@ -11,7 +11,6 @@ public interface StudentRepositery extends JpaRepository<Student,Integer> {
         public List<Student> findAll();
         public Optional<Student> findById(Integer id);
         public Optional<Student> findByEmail(String email);
-        public List<Student> findAll(String name);
         public List<Student> findByAge(Integer age);
 
 

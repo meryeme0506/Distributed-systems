@@ -18,11 +18,11 @@ public class StudentAPI {
         return studentRepositery.findAll();
     }
 
-    public Optional<Student> getByEmail(String email){
-        return studentRepositery.findByEmail(email);
+    public Optional<Student> getByEmail(String mail){
+        return studentRepositery.findByEmail(mail);
     }
 
-    public List<Student> getStudentsOlderThan(){
+    public List<Student> getStudentsOlderThanTwenty(){
         List<Student> students = studentRepositery.findAll();
         List<Student> studentsOlderThanAge = null;
         for(Student s : students){
@@ -38,11 +38,56 @@ public class StudentAPI {
         return studentRepositery.save(s);
     }
 
+    /**
+     * updates the student e-mail
+     * @param s
+     * @param mail
+     * @return the modified student
+     */
     @PutMapping("students")
-    public Student update(@RequestBody Student s, @RequestParam String email){
-
+    public Student update(@RequestBody Student s, @RequestParam String mail){
+        Optional<Student> student = studentRepositery.findById(s.getId());
+        student.ifPresent(value -> value.setEmail(mail));
+        return studentRepositery.save(student.orElse(null));
     }
 
+    /**
+     * Updates the student's last name
+     * @param mail
+     * @param lastName
+     * @return the modified student
+     */
+    @PutMapping("students")
+    public Student update(@RequestBody String mail, @RequestParam String lastName){
+        Optional<Student> student = studentRepositery.findByEmail(mail);
+        student.ifPresent(value -> value.setLastName(lastName));
+        return studentRepositery.save(student.orElse(null));
+    }
+    /**
+     * increments by 1 the age of a given student
+     * @param s
+     * @return the modified student
+     */
+    @PutMapping("students")
+    public Student update(@RequestBody Student s){
+        Optional<Student> student = studentRepositery.findById(s.getId());
+        int age = s.getAge();
+        student.ifPresent(value -> value.setAge(age+1));
+        return studentRepositery.save(student.orElse(null));
+    }
+
+    public void incrementingAgeByOne(){
+        List<Student> students = studentRepositery.findAll();
+        for(Student s : students){
+            update(s);
+        }
+    }
+
+    @DeleteMapping("students/email/{email}")
+    public void delete(@PathVariable String mail){
+        Optional<Student> student = studentRepositery.findByEmail(mail);
+        studentRepositery.delete(student.orElse(null));
+    }
 
 
 
