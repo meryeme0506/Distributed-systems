@@ -10,10 +10,11 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("students")
 public class StudentAPI {
     private final StudentRepositery studentRepositery;
 
-    @GetMapping("students")
+    @GetMapping("/students1")
     public List<Student> getAll(){
         return studentRepositery.findAll();
     }
@@ -44,7 +45,7 @@ public class StudentAPI {
      * @param mail
      * @return the modified student
      */
-    @PutMapping("students")
+    @PutMapping("/update")
     public Student update(@RequestBody Student s, @RequestParam String mail){
         Optional<Student> student = studentRepositery.findById(s.getId());
         student.ifPresent(value -> value.setEmail(mail));
@@ -57,7 +58,7 @@ public class StudentAPI {
      * @param lastName
      * @return the modified student
      */
-    @PutMapping("students")
+    @PutMapping("/students3")
     public Student update(@RequestBody String mail, @RequestParam String lastName){
         Optional<Student> student = studentRepositery.findByEmail(mail);
         student.ifPresent(value -> value.setLastName(lastName));

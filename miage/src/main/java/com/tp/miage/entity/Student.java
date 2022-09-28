@@ -1,8 +1,12 @@
 package com.tp.miage.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -20,6 +24,12 @@ public class Student{
     private String email;
     @Column(name = "age")
     private Integer age;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Book> books;
 
 
 }
